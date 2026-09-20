@@ -6,7 +6,10 @@
   "scripts": {
      "dev": "tsx watch src/server.ts",
   "build": "tsc",
-  "start": "node dist/server.js"
+  "start": "node dist/server.js",
+    "db:init": "tsx src/scripts/initDb.ts",
+    "db:reset": "tsx src/scripts/initDb.ts --reset",
+    "db:seed": "tsx src/scripts/seed.ts"
   },
   "keywords": [],
   "author": "",
