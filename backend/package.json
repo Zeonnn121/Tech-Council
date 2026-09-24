@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-     "dev": "tsx watch src/server.ts",
-  "build": "tsc",
-  "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
     "db:init": "tsx src/scripts/initDb.ts",
     "db:reset": "tsx src/scripts/initDb.ts --reset",
     "db:seed": "tsx src/scripts/seed.ts"
@@ -26,6 +26,7 @@
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.12.1",
     "mysql2": "^3.24.4",
+    "pdfkit": "^0.20.2",
     "zod": "^4.6.5"
   },
   "devDependencies": {
@@ -34,6 +35,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "@types/node": "^26.6.2",
+    "@types/pdfkit": "^0.17.6",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
