@@ -1,0 +1,70 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "ap-south-1",
+      "eventTime": "2025-09-15T12:00:00.000Z",
+      "eventName": "ObjectCreated:Put",
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "tc-upload-trigger",
+        "bucket": {
+          "name": "your-bucket-name",
+          "ownerIdentity": { "principalId": "EXAMPLE" },
+          "arn": "arn:aws:s3:::your-bucket-name"
+        },
+        "object": {
+          "key": "events/event-1/photos/550e8400-e29b-41d4-a716-446655440000-photo.jpg",
+          "size": 204800,
+          "eTag": "d41d8cd98f00b204e9800998ecf8427e",
+          "sequencer": "0A1B2C3D4E5F678901"
+        }
+      }
+    },
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "ap-south-1",
+      "eventTime": "2025-09-15T12:01:00.000Z",
+      "eventName": "ObjectCreated:Put",
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "tc-upload-trigger",
+        "bucket": {
+          "name": "your-bucket-name",
+          "ownerIdentity": { "principalId": "EXAMPLE" },
+          "arn": "arn:aws:s3:::your-bucket-name"
+        },
+        "object": {
+          "key": "certificates/event-1/TC-2025-E001-P0042.pdf",
+          "size": 512000,
+          "eTag": "d41d8cd98f00b204e9800998ecf8427f",
+          "sequencer": "0A1B2C3D4E5F678902"
+        }
+      }
+    },
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "ap-south-1",
+      "eventTime": "2025-09-15T12:02:00.000Z",
+      "eventName": "ObjectCreated:Put",
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "tc-upload-trigger",
+        "bucket": {
+          "name": "your-bucket-name",
+          "ownerIdentity": { "principalId": "EXAMPLE" },
+          "arn": "arn:aws:s3:::your-bucket-name"
+        },
+        "object": {
+          "key": "events/event-2/documents/report-final.exe",
+          "size": 1024,
+          "eTag": "d41d8cd98f00b204e9800998ecf8427a",
+          "sequencer": "0A1B2C3D4E5F678903"
+        }
+      }
+    }
+  ]
+}

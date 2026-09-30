@@ -1,0 +1,10 @@
+{
+  "name": "tc-frontend",
+  "version": "0.0.0",
+  "private": true,
+  "description": "PLACEHOLDER frontend. Exists so deploy/build-and-upload.ps1 can package a frontend/dist bundle. Replace this entire folder with the real React app.",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "license": "ISC"
+}

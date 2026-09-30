@@ -1,0 +1,491 @@
+{
+  "info": {
+    "name": "TechCouncil API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Technical Council Event Management System — full API in demo flow order."
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000", "type": "string" },
+    { "key": "token", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "if (res.data && res.data.token) {",
+                  "  pm.collectionVariables.set('token', res.data.token);",
+                  "  console.log('Token saved:', res.data.token.substring(0, 20) + '...');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@council.edu\",\n  \"password\": \"secret123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/auth/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/users",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bob Organizer\",\n  \"email\": \"bob@council.edu\",\n  \"password\": \"secret123\",\n  \"role\": \"organizer\",\n  \"department\": \"Electrical Engineering\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "query": [{ "key": "role", "value": "organizer", "disabled": true }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "item": [
+        {
+          "name": "Get Filter Metadata",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/events/meta/filters"
+          }
+        },
+        {
+          "name": "Create Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/events",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Annual Tech Symposium\",\n  \"description\": \"A flagship annual event showcasing student innovations.\",\n  \"category\": \"seminar\",\n  \"event_date\": \"2025-10-15\",\n  \"venue\": \"Main Auditorium\",\n  \"max_participants\": 200,\n  \"registration_deadline\": \"2025-10-10\",\n  \"department\": \"Computer Science\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List Events",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/events",
+              "query": [
+                { "key": "q", "value": "tech", "disabled": true },
+                { "key": "category", "value": "seminar", "disabled": true },
+                { "key": "status", "value": "registration_open", "disabled": true },
+                { "key": "year", "value": "2025", "disabled": true },
+                { "key": "sort", "value": "date_asc", "disabled": true },
+                { "key": "page", "value": "1", "disabled": false },
+                { "key": "limit", "value": "20", "disabled": false }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Event",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/events/1"
+          }
+        },
+        {
+          "name": "Update Event",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/events/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"max_participants\": 250,\n  \"description\": \"Updated description for the event.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Event Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/events/1/status",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"registration_open\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Event",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/events/1"
+          }
+        },
+        {
+          "name": "Add Event Organizer",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/events/1/organizers",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": 2,\n  \"responsibility\": \"Logistics\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List Event Organizers",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/events/1/organizers"
+          }
+        },
+        {
+          "name": "Remove Event Organizer",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/events/1/organizers/2"
+          }
+        },
+        {
+          "name": "Set Event Outcome",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/events/1/outcome",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"participants_count\": 148,\n  \"feedback_score\": 4.5,\n  \"winners\": \"Team Alpha\",\n  \"description\": \"Highly successful event with great student participation.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Event Outcome",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/events/1/outcome"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Participants",
+      "item": [
+        {
+          "name": "Create Participant",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/participants",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Carol Student\",\n  \"email\": \"carol@student.edu\",\n  \"department\": \"Computer Science\",\n  \"year\": 2,\n  \"phone\": \"9876543210\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List Participants",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/participants",
+              "query": [
+                { "key": "q", "value": "carol", "disabled": true },
+                { "key": "department", "value": "Computer Science", "disabled": true },
+                { "key": "year", "value": "2", "disabled": true },
+                { "key": "page", "value": "1", "disabled": false },
+                { "key": "limit", "value": "20", "disabled": false }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Participant",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/participants/1"
+          }
+        },
+        {
+          "name": "Update Participant",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/participants/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"9123456789\",\n  \"year\": 3\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Participant Certificates",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/participants/1/certificates"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Registrations",
+      "item": [
+        {
+          "name": "Register Participant",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/events/1/registrations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"participant_id\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "List Registrations",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/events/1/registrations"
+          }
+        },
+        {
+          "name": "Cancel Registration",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/registrations/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"cancelled\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Attendance",
+      "item": [
+        {
+          "name": "Submit Attendance",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/events/1/attendance",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"records\": [\n    { \"participant_id\": 1, \"present\": true },\n    { \"participant_id\": 2, \"present\": false }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Attendance",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/events/1/attendance"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Files",
+      "item": [
+        {
+          "name": "Get Upload URL",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/events/1/files/upload-url",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file_name\": \"event-banner.jpg\",\n  \"file_type\": \"photo\",\n  \"content_type\": \"image/jpeg\",\n  \"size_bytes\": 204800\n}"
+            }
+          }
+        },
+        {
+          "name": "Register Uploaded File",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/events/1/files",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"s3_key\": \"events/event-1/photos/550e8400-e29b-41d4-a716-446655440000-event-banner.jpg\",\n  \"original_name\": \"event-banner.jpg\",\n  \"file_type\": \"photo\",\n  \"content_type\": \"image/jpeg\",\n  \"size_bytes\": 204800\n}"
+            }
+          }
+        },
+        {
+          "name": "List Event Files",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/events/1/files",
+              "query": [
+                { "key": "file_type", "value": "photo", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Download URL",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/files/1/download-url"
+          }
+        },
+        {
+          "name": "Delete File",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/files/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Certificates",
+      "item": [
+        {
+          "name": "Create Certificate Records",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/events/1/certificates",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"participant_ids\": [1, 2, 3]\n}"
+            }
+          }
+        },
+        {
+          "name": "List Event Certificates",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/events/1/certificates"
+          }
+        },
+        {
+          "name": "Issue Certificate (Generate PDF)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/certificates/1/issue"
+          }
+        },
+        {
+          "name": "Get Certificate Download URL",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/certificates/1/download-url"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Get Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/dashboard/stats"
+          }
+        }
+      ]
+    }
+  ]
+}
